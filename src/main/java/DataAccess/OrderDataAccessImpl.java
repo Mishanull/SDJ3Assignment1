@@ -6,10 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderDataAccessImpl implements OrderDataAccess {
-    private final String SCHEMA="assignment";
+    private final String SCHEMA="public";
     @Override
     public ArrayList<Order> getOrders() {
-        String SQL = "SELECT * FROM " +SCHEMA+ ".orders" ;
+        String SQL = "SELECT * FROM " +SCHEMA+ ".orders"+" ORDER BY id" ;
         ArrayList<Order> orders=new ArrayList<>();
         try (Connection conn =  DBSConnection.getInstance().connect();
              Statement stmt = conn.createStatement();
@@ -45,7 +45,7 @@ public class OrderDataAccessImpl implements OrderDataAccess {
     @Override
     public void updateOrder(Order o) {
         try(Connection con=DBSConnection.getInstance().connect()){
-            String SQL="Update "+SCHEMA+".orders "+" SET description= "+o.getDescription()+" ,amount= "+o.getAmount()+" ,delivered"+o.isDelivered()+" where id="+o.getId();
+            String SQL="Update "+SCHEMA+".orders "+" SET description= "+"'"+o.getDescription()+"'"+" ,amount= "+"'"+o.getAmount()+"'"+" ,delivered="+"'"+o.isDelivered()+"'"+" where id="+"'"+o.getId()+"'";
             PreparedStatement statement=con.prepareStatement(SQL);
             int result=statement.executeUpdate();
             if(result<=0)
@@ -58,11 +58,11 @@ public class OrderDataAccessImpl implements OrderDataAccess {
     @Override
     public void removeOrder(int id) {
         try(Connection con=DBSConnection.getInstance().connect()){
-            String SQL="Delete from  "+SCHEMA+".orders "+" where id="+id;
+            String SQL="Delete from  "+SCHEMA+".orders "+" where id="+"'"+id+"'";
             PreparedStatement statement=con.prepareStatement(SQL);
             int result=statement.executeUpdate();
             if(result<=0)
-                throw new RuntimeException("Update failed");
+                throw new RuntimeException("Update failed, no rows found with that id");
         }catch (SQLException e){
             e.printStackTrace();
         }

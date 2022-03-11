@@ -26,11 +26,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(Order o) {
-
+        dataAccess.updateOrder(o);
     }
 
     @Override
     public void deleteOrder(int i) {
-
+        dataAccess.removeOrder(i);
     }
 }
