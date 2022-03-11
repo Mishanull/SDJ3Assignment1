@@ -12,5 +12,9 @@ public interface OrderService {
     @WebMethod
     ArrayList<Order> getOrders();
     @WebMethod
-    void addOrder( String description,float amount, boolean delivered);
+    void addOrder(  String description,float amount, boolean delivered);
+    @WebMethod
+    void updateOrder(Order o);
+    @WebMethod
+    void deleteOrder(int i);
 }

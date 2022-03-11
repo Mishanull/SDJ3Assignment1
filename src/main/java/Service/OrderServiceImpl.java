@@ -23,4 +23,14 @@ public class OrderServiceImpl implements OrderService {
     public void addOrder( String description,float amount, boolean delivered) {
         dataAccess.addOrder(new Order(description,amount,delivered));
     }
+
+    @Override
+    public void updateOrder(Order o) {
+
+    }
+
+    @Override
+    public void deleteOrder(int i) {
+
+    }
 }

@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderDataAccessImpl implements OrderDataAccess {
-    private final String SCHEMA="public";
+    private final String SCHEMA="assignment";
     @Override
     public ArrayList<Order> getOrders() {
         String SQL = "SELECT * FROM " +SCHEMA+ ".orders" ;
@@ -44,11 +44,27 @@ public class OrderDataAccessImpl implements OrderDataAccess {
 
     @Override
     public void updateOrder(Order o) {
-
+        try(Connection con=DBSConnection.getInstance().connect()){
+            String SQL="Update "+SCHEMA+".orders "+" SET description= "+o.getDescription()+" ,amount= "+o.getAmount()+" ,delivered"+o.isDelivered()+" where id="+o.getId();
+            PreparedStatement statement=con.prepareStatement(SQL);
+            int result=statement.executeUpdate();
+            if(result<=0)
+                throw new RuntimeException("Update failed");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void removeOrder(Order o) {
-
+    public void removeOrder(int id) {
+        try(Connection con=DBSConnection.getInstance().connect()){
+            String SQL="Delete from  "+SCHEMA+".orders "+" where id="+id;
+            PreparedStatement statement=con.prepareStatement(SQL);
+            int result=statement.executeUpdate();
+            if(result<=0)
+                throw new RuntimeException("Update failed");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
